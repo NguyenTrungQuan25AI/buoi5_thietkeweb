@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="quan.css">
+    <title>Button</title>
+</head>
+<body>
+    <!-- Vòng tròn loading xuất hiện trước -->
+    <div class="loader"></div>
+
+    <!-- Nút bấm ban đầu được ẩn với class hidden -->
+    <button class="hidden">NHẤN VÀO ĐÂY</button>
+
+    <script>
+        // Sau 0.5 giây (500ms), ẩn loader và hiển thị nút
+        setTimeout(() => {
+            const loader = document.querySelector('.loader');
+            const button = document.querySelector('button');
+
+            if (loader) loader.style.display = 'none';
+            if (button) button.classList.remove('hidden');
+        }, 500);
+    </script>
+</body>
+</html>
