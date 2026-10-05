@@ -1,0 +1,1529 @@
+/* ==========================================================================
+   BÀI TẬP BUỔI 5: THIẾT KẾ WEB HIỆN ĐẠI
+   Tên file: quan_homework.css
+   Tác giả: Nguyễn Trung Quân
+   Mục tiêu:
+     1. Bộ khung Design System (CSS Variables) >= 5 thuộc tính.
+     2. Bố cục tổng thể trang web bằng CSS Grid (Header, Sidebar, Main, Footer).
+     3. Vận dụng Flexbox linh hoạt cho các khối con (Navbar, Card, Form...).
+     4. Thiết kế theo chuẩn Mobile-First (phát triển từ mobile mở rộng lên desktop).
+     5. Hệ thống Media Queries tối ưu cho nhiều thiết bị giả lập (Inspect).
+     6. Quy chuẩn phòng chống & khắc phục lỗi vỡ khung layout (Debugging).
+   ========================================================================== */
+
+/* ==========================================================================
+   1. BỘ KHUNG DESIGN SYSTEM (CSS VARIABLES)
+   Định nghĩa tại :root để tái sử dụng toàn cục và dễ dàng bảo trì hoặc đổi theme.
+   Gồm hơn 6 nhóm thuộc tính: Màu sắc, Khoảng cách, Typography, Bo góc, Bóng đổ, Hiệu ứng.
+   ========================================================================== */
+:root {
+  /* 1.1 Bảng màu (Color Palette) */
+  --color-primary: #00f3ff;          /* Màu neon cyan chủ đạo */
+  --color-primary-glow: rgba(0, 243, 255, 0.4);
+  --color-secondary: #7000ff;        /* Màu tím công nghệ làm điểm nhấn */
+  --color-bg: #0b0f19;               /* Nền tối sâu (Dark mode) */
+  --color-surface: #151d2e;          /* Nền thẻ, card, sidebar */
+  --color-surface-hover: #1c273e;    /* Nền khi hover */
+  --color-text-main: #f1f5f9;        /* Chữ sáng chính */
+  --color-text-muted: #94a3b8;       /* Chữ phụ, mô tả */
+  --color-border: rgba(255, 255, 255, 0.08); /* Viền mờ tinh tế */
+  --color-border-focus: var(--color-primary);
+  --color-badge-bg: rgba(0, 243, 255, 0.1);
+
+  /* 1.2 Thang khoảng cách (Spacing Scale) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 36px;
+  --space-2xl: 56px;
+
+  /* 1.3 Thang cỡ chữ (Typography Scale) */
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-base: 16px;
+  --font-md: 18px;
+  --font-lg: 22px;
+  --font-xl: 28px;
+  --font-2xl: 36px;
+
+  /* 1.4 Bo góc (Border Radius) */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  /* 1.5 Đổ bóng & Phát sáng (Box Shadow & Glow) */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-neon: 0 0 15px var(--color-primary-glow);
+  --shadow-neon-hover: 0 0 25px var(--color-primary);
+
+  /* 1.6 Chuyển động (Transitions) */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  /* 1.7 Biến dành cho Floating Action Button (FAB) */
+  --fab-bg: var(--color-primary);
+  --fab-color: var(--color-bg);
+  --fab-pulse-glow: var(--color-primary-glow);
+  --fab-hover-bg: #00c4cf; /* Tối lại khi hover */
+}
+
+/* ==========================================================================
+   2. RESET & QUY TẮC PHÒNG CHỐNG "VỠ KHUNG" (DEFENSIVE CSS)
+   Các quy tắc này ngăn chặn 99% lỗi vỡ khung thường gặp khi co giãn trình duyệt.
+   ========================================================================== */
+
+/* 
+   Lỗi vỡ khung 1: Padding và border cộng thêm vào width làm phần tử to quá 100%.
+   Khắc phục: Sử dụng border-box cho toàn bộ mọi phần tử.
+*/
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 
+   Lỗi vỡ khung 2: Chuỗi dài (URL, email, mã code) không có khoảng trắng làm tràn khung ngang.
+   Khắc phục: Ép ngắt dòng tự động.
+*/
+p, h1, h2, h3, h4, h5, h6, li, a, span {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 
+   Lỗi vỡ khung 3: Tràn thanh cuộn ngang ngoài ý muốn do animation hoặc fixed element.
+   Khắc phục: overflow-x hidden ở cả html và body.
+*/
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+/* 
+   Lỗi vỡ khung 4: Hình ảnh hoặc media to hơn khung chứa làm xô lệch toàn bộ layout.
+   Khắc phục: Giới hạn max-width 100% cho mọi media.
+*/
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 
+   Lỗi vỡ khung 5: Các thẻ form (input, textarea) có kích thước mặc định vượt màn hình điện thoại.
+   Khắc phục: Luôn đặt max-width 100%.
+*/
+input, textarea, select, button {
+  font: inherit;
+  max-width: 100%;
+}
+
+/* Tùy chỉnh thanh cuộn đẹp mắt */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   3. BỐ CỤC LƯỚI TỔNG THỂ (CSS GRID) THEO CHUẨN MOBILE-FIRST
+   Cấu trúc 4 khối lớn: Header, Sidebar, Main, Footer.
+   Ở màn hình nhỏ (Mobile): Xếp chồng 1 cột tuần tự.
+   Ở màn hình lớn (Desktop): 2 cột (Sidebar bên trái, Main bên phải).
+   ========================================================================== */
+body {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "header"
+    "sidebar"
+    "main"
+    "footer";
+  min-height: 100vh;
+  min-height: 100dvh; /* Hỗ trợ dynamic viewport height trên mobile */
+}
+
+/* Định danh các vùng lưới tương ứng với thẻ ngữ nghĩa HTML */
+header {
+  grid-area: header;
+}
+
+aside.sidebar {
+  grid-area: sidebar;
+  min-width: 0; /* Khắc phục lỗi Grid item bung khung khi nội dung dài */
+}
+
+main {
+  grid-area: main;
+  min-width: 0; /* Cực kỳ quan trọng: Giúp flex/grid con bên trong main không tràn ra ngoài */
+}
+
+footer {
+  grid-area: footer;
+}
+
+/* ==========================================================================
+   4. CẤU TRÚC CHI TIẾT TỪNG KHỐI (MOBILE-FIRST BASE STYLES)
+   Vận dụng Flexbox linh hoạt cho các khối con bên trong.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   4.1 HEADER & NAVBAR (MODERN HAMBURGER MENU & FLEXBOX)
+   -------------------------------------------------------------------------- */
+header {
+  background: rgba(11, 15, 25, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: var(--space-md) var(--space-lg);
+
+  /* FLEXBOX: Căn chỉnh Logo bên trái và Nút Hamburger bên phải trên Mobile */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo a {
+  text-decoration: none;
+  font-size: var(--font-lg);
+  font-weight: 800;
+  color: var(--color-text-main);
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: var(--color-primary);
+  text-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+/* Checkbox ẩn điều khiển trạng thái mở/đóng Menu (Checkbox Hack thuần CSS) */
+.menu-toggle-input {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   4.1.1 MODERN HAMBURGER MENU: CẤU TRÚC 3 VẠCH ĐỘC LẬP
+   Biến đổi 3 gạch ngang thành dấu "X" mượt mà bằng CSS Transitions
+   -------------------------------------------------------------------------- */
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 1002;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* 3 vạch độc lập bên trong nút Hamburger */
+.hamburger-btn .bar {
+  display: block;
+  width: 100%;
+  height: 2.5px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 6px var(--color-primary-glow);
+  transform-origin: center;
+
+  /* CSS TRANSITION: Đảm bảo biến đổi cực kỳ mượt mà khi người dùng nhấn mở menu */
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.25s ease,
+              background-color 0.3s ease;
+}
+
+/* BIẾN ĐỔI THÀNH DẤU "X" KHI NGƯỜI DÙNG MỞ MENU (:checked) */
+
+/* 1. Vạch trên: Dịch chuyển xuống giữa và xoay 45 độ */
+.menu-toggle-input:checked ~ .hamburger-btn .bar-top {
+  transform: translateY(8.75px) rotate(45deg);
+  background-color: #ff3366; /* Đổi sang màu đỏ neon nhấn mạnh trạng thái Đóng */
+  box-shadow: 0 0 8px rgba(255, 51, 102, 0.6);
+}
+
+/* 2. Vạch giữa: Mờ đục dần (opacity: 0) và thu nhỏ chiều ngang để biến mất */
+.menu-toggle-input:checked ~ .hamburger-btn .bar-mid {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+/* 3. Vạch dưới: Dịch chuyển lên giữa và xoay -45 độ */
+.menu-toggle-input:checked ~ .hamburger-btn .bar-bot {
+  transform: translateY(-8.75px) rotate(-45deg);
+  background-color: #ff3366;
+  box-shadow: 0 0 8px rgba(255, 51, 102, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   4.1.2 BỘ BA THUỘC TÍNH CSS LÕI: TRANSFORM, TRANSITION, VÀ OPACITY
+   Áp dụng đồng bộ trên CẢ 3 THIẾT BỊ: PHONE, TABLET VÀ DESKTOP
+   -------------------------------------------------------------------------- */
+nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(11, 15, 25, 0.98);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+  
+  /* Transition mở trượt thả menu mượt mà */
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              padding 0.3s ease,
+              opacity 0.3s ease;
+}
+
+/* Khi mở menu (:checked): mở rộng khung menu trên cả 3 thiết bị */
+.menu-toggle-input:checked ~ nav {
+  max-height: 320px;
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* THIẾT KẾ ĐẶC BIỆT CHO TABLET & DESKTOP (Từ 640px trở lên)
+   Menu thả xuống thành một Floating Dropdown Card cao cấp neo ở góc phải dưới Hamburger */
+@media (min-width: 640px) {
+  nav {
+    left: auto;
+    right: var(--space-xl);
+    width: 300px;
+    border: 1px solid var(--color-primary-glow);
+    border-radius: var(--radius-md);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 243, 255, 0.2);
+    margin-top: var(--space-xs);
+  }
+}
+
+nav ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: var(--space-sm);
+  align-items: stretch;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+/* ==========================================================================
+   BỘ BA THUỘC TÍNH LÕI CHO CÁC THẺ <li> CỦA MENU
+   - OPACITY: Kiểm soát độ trong suốt / hiển thị
+   - TRANSFORM: Dịch chuyển vị trí xuất hiện
+   - TRANSITION: Làm mượt quá trình thay đổi trạng thái
+   ========================================================================== */
+nav ul li {
+  width: 100%;
+
+  /* 1. OPACITY: Ẩn hoàn toàn khi Menu đang đóng */
+  opacity: 0;
+
+  /* 2. TRANSFORM: Dịch chuyển nhẹ lên trên trước khi trượt vào */
+  transform: translateY(-16px);
+
+  /* 3. TRANSITION: Chuyển động siêu mượt cho cả vị trí và độ mờ */
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+              opacity 0.35s ease;
+}
+
+/* Khi người dùng mở Menu (:checked): kích hoạt hiển thị cho các thẻ <li> */
+.menu-toggle-input:checked ~ nav ul li {
+  /* OPACITY: Hiển thị rõ nét 100% */
+  opacity: 1;
+
+  /* TRANSFORM: Trả về vị trí chuẩn ban đầu */
+  transform: translateY(0);
+}
+
+/* Kỹ thuật Staggered Transition Delays: Tạo độ trễ so le cuốn hút */
+.menu-toggle-input:checked ~ nav ul li:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.menu-toggle-input:checked ~ nav ul li:nth-child(2) {
+  transition-delay: 0.18s;
+}
+.menu-toggle-input:checked ~ nav ul li:nth-child(3) {
+  transition-delay: 0.26s;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-base);
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+nav a:hover, nav a:focus {
+  color: var(--color-primary);
+  background-color: var(--color-badge-bg);
+  transform: translateX(4px);
+}
+
+
+/* --------------------------------------------------------------------------
+   4.2 SIDEBAR: THANH BÊN BỔ TRỢ (SỬ DỤNG FLEXBOX)
+   -------------------------------------------------------------------------- */
+aside.sidebar {
+  padding: var(--space-md) var(--space-md);
+}
+
+.badge-online {
+  display: inline-block;
+  background: var(--color-badge-bg);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-glow);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-xs);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   4.2.2 PROFILE CARD 3D FLIP (NẰM TRONG SIDEBAR)
+   Kỹ thuật lõi:
+   - perspective: Tạo không gian chiều sâu phối cảnh 3D cho container cha
+   - transform-style: preserve-3d: Giữ hai mặt con cùng tồn tại trong không gian 3D
+   - backface-visibility: hidden: Ẩn mặt sau khi đang quay lưng lại phía người nhìn
+   -------------------------------------------------------------------------- */
+
+/* 1. Container cha: Thiết lập không gian phối cảnh chiều sâu 3D */
+.card-container {
+  width: 100%;
+  height: 460px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+/* 2. Thẻ con .card: Giữ hai mặt trong không gian 3D và thực hiện xoay */
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;           /* Cho phép con tồn tại trong không gian 3D */
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Khi hover container, xoay toàn bộ thẻ 180 độ quanh trục Y */
+.card-container:hover .card {
+  transform: rotateY(180deg);
+}
+
+/* 3. Kiểu dáng chung cho cả hai mặt */
+.card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  padding: var(--space-lg) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  backface-visibility: hidden;            /* Ẩn mặt phẳng khi nó quay lưng lại */
+  -webkit-backface-visibility: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+/* 4. Mặt trước */
+.card-front {
+  background: linear-gradient(145deg, var(--color-surface), #0e1524);
+  color: var(--color-text-main);
+  transform: rotateY(0deg);
+  gap: var(--space-sm);
+}
+
+/* Khung ảnh đại diện bo tròn với viền gradient neon */
+.avatar-box {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  padding: 3px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  box-shadow: var(--shadow-neon);
+  margin-bottom: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  display: block;
+}
+
+.profile-name {
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: 2px;
+}
+
+.profile-role {
+  font-size: var(--font-xs);
+  color: var(--color-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-sm);
+}
+
+/* Danh sách thông tin nhanh trên mặt trước card */
+.card-front .sidebar-quick-info {
+  list-style: none;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font-size: var(--font-xs);
+  padding: 0;
+  margin-bottom: var(--space-sm);
+}
+
+.card-front .sidebar-quick-info li {
+  color: var(--color-text-muted);
+}
+
+.card-front .sidebar-quick-info strong {
+  color: var(--color-text-main);
+}
+
+.flip-hint {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+}
+
+/* 5. Mặt sau - Xoay sẵn 180deg, khi card quay 180deg thì mặt này lộ ra */
+.card-back {
+  background: linear-gradient(145deg, #0e1524, var(--color-surface));
+  color: var(--color-text-main);
+  border-color: var(--color-primary-glow);
+  transform: rotateY(180deg);             /* Mặc định úp lưng lại, bị ẩn bởi backface-visibility */
+  align-items: flex-start;
+  text-align: left;
+  justify-content: flex-start;
+  gap: var(--space-sm);
+  padding-top: var(--space-lg);
+}
+
+.back-title {
+  font-size: var(--font-base);
+  color: var(--color-primary);
+  margin-bottom: 0;
+  width: 100%;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-sm);
+}
+
+.back-intro {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+.contact-list {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.contact-list li {
+  font-size: var(--font-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-label {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contact-list a {
+  color: var(--color-text-main);
+  text-decoration: none;
+  word-break: break-all;
+  transition: color var(--transition-fast);
+}
+
+.contact-list a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-xs);
+  color: var(--color-primary);
+  background: var(--color-badge-bg);
+  border: 1px solid var(--color-primary-glow);
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  margin-top: auto;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4.3 MAIN & CÁC SECTION BÊN TRONG
+   -------------------------------------------------------------------------- */
+main {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+section h2 {
+  font-size: var(--font-xl);
+  color: var(--color-text-main);
+  margin-bottom: var(--space-md);
+  position: relative;
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-primary);
+  display: inline-block;
+}
+
+section p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+  font-size: var(--font-base);
+}
+
+section ul {
+  padding-left: var(--space-lg);
+  margin-bottom: var(--space-md);
+  color: var(--color-text-muted);
+}
+
+section ul li {
+  margin-bottom: var(--space-sm);
+}
+
+section ul li strong {
+  color: var(--color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   4.3.0 PARALLAX BANNER (ẢNH NỀN DI CHUYỂN CHẬM HƠN NỘI DUNG KHI CUỘN)
+   Áp dụng đầy đủ 3 thuộc tính cốt lõi:
+   - background-attachment: fixed; -> Cố định ảnh khi cuộn.
+   - background-position: center;   -> Căn giữa ảnh để không bị lệch góc.
+   - background-size: cover;        -> Đảm bảo ảnh luôn phủ kín khung, không bị méo tỷ lệ.
+   -------------------------------------------------------------------------- */
+.parallax-banner {
+  /* 1. Bộ 3 thuộc tính lõi tạo hiệu ứng Parallax thuần CSS */
+  background-image: 
+    linear-gradient(rgba(11, 15, 25, 0.78), rgba(11, 15, 25, 0.88)),
+    url("https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1920&q=80");
+  background-attachment: fixed; /* Cố định ảnh khi cuộn */
+  background-position: center;   /* Căn giữa ảnh để không bị lệch góc */
+  background-size: cover;        /* Đảm bảo ảnh luôn phủ kín khung, không bị méo tỷ lệ */
+  background-repeat: no-repeat;
+
+  /* Thiết kế kích thước và bố cục */
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8), var(--shadow-md);
+  padding: var(--space-xl) var(--space-lg);
+  position: relative;
+  overflow: hidden;
+  /* Phòng thủ: ngăn chặn bất kỳ thư viện animation nào áp transform làm hỏng background-attachment: fixed */
+  transform: none !important;
+}
+
+.parallax-content {
+  max-width: 650px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.parallax-tag {
+  display: inline-block;
+  color: var(--color-primary);
+  font-size: var(--font-xs);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+  background: var(--color-badge-bg);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-primary-glow);
+}
+
+.parallax-title {
+  color: #ffffff;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: var(--space-sm);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.parallax-subtitle {
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+  margin-bottom: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* --------------------------------------------------------------------------
+   4.3.1 SECTION 2: KỸ NĂNG & DỰ ÁN TIÊU BIỂU
+   Khắc phục triệt để lỗi h3 "Dự Án Tiêu Biểu" bị kẹt làm 1 ô grid ở góc trên bên trái.
+   -------------------------------------------------------------------------- */
+.skills-block {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+}
+
+/* Từng thẻ kỹ năng */
+.skill-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.skill-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.skill-name {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+.skill-name strong {
+  color: var(--color-primary);
+  font-size: var(--font-base);
+}
+
+.skill-percent {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-shadow: 0 0 8px var(--color-primary-glow);
+  font-family: monospace;
+}
+
+/* Khung rãnh nền của thanh tiến trình (Progress Track) */
+.skill-progress-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Dải màu tiến trình (Progress Bar):
+   - Đặt chiều rộng theo biến --target: width: var(--target)
+   - Tối ưu nâng cao với transform-origin: left và transform: scaleX()
+   - animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1) tạo cảm giác chuyển động vật lý cao cấp
+   - animation-fill-mode: forwards giữ cố định độ dài sau khi chạy xong
+*/
+.skill-progress-bar {
+  height: 100%;
+  width: var(--target, 100%);
+  background: linear-gradient(90deg, var(--color-primary), #00b4d8, var(--color-secondary));
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 10px var(--color-primary-glow);
+
+  /* TỐI ƯU NÂNG CAO: Xoay/phóng theo trục gốc bên trái (GPU Render) */
+  transform-origin: left;
+  transform: scaleX(0); /* Bắt đầu từ 0% */
+
+  /* Kích hoạt chuyển động chạy từ 0 đến giá trị đích */
+  animation-name: fillSkillBar;
+  animation-duration: 1.6s;
+  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
+
+  /* TẠM DỪNG: Animation không chạy ngay khi tải trang,
+     chỉ chạy khi cuộn đến phần này (AOS thêm class .aos-animate) */
+  animation-play-state: paused;
+}
+
+/* KHI CUỘN ĐẾN: AOS thêm class .aos-animate → kích hoạt animation */
+.skill-item.aos-animate .skill-progress-bar {
+  animation-play-state: running;
+}
+
+/* Staggered Delay: Các thanh kỹ năng chạy nối tiếp nhau mượt mà */
+.skill-item:nth-child(1) .skill-progress-bar { animation-delay: 0.2s; }
+.skill-item:nth-child(2) .skill-progress-bar { animation-delay: 0.35s; }
+.skill-item:nth-child(3) .skill-progress-bar { animation-delay: 0.5s; }
+.skill-item:nth-child(4) .skill-progress-bar { animation-delay: 0.65s; }
+.skill-item:nth-child(5) .skill-progress-bar { animation-delay: 0.8s; }
+
+/* --------------------------------------------------------------------------
+   @KEYFRAMES: ĐỊNH NGHĨA CHUỖI CHUYỂN ĐỘNG CHẠY TỪ 0% ĐẾN ĐÍCH
+   -------------------------------------------------------------------------- */
+/* 1. Phương pháp tối ưu phần cứng GPU (scaleX kết hợp transform-origin: left) */
+@keyframes fillSkillBar {
+  0% {
+    transform: scaleX(0);
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* 2. Phương pháp thay thế dùng Width từ 0 đến var(--target) */
+@keyframes fillSkillWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--target);
+  }
+}
+
+/* Tiêu đề khối con h3: luôn trải rộng 100% full hàng */
+section h3,
+.block-title {
+  font-size: var(--font-lg);
+  color: var(--color-text-main);
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  grid-column: 1 / -1; /* Đảm bảo luôn chiếm trọn toàn bộ chiều ngang hàng */
+}
+
+/* Đường vạch phát sáng tinh tế trước mỗi tiêu đề h3 */
+section h3::before,
+.block-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background: var(--color-primary);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 8px var(--color-primary-glow);
+}
+
+/* Khối bao bọc Dự án tiêu biểu */
+.projects-block {
+  width: 100%;
+}
+
+.block-header {
+  margin-bottom: var(--space-lg);
+}
+
+.block-desc {
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+  margin-top: var(--space-xs);
+  margin-bottom: 0;
+}
+
+/* Lưới hiển thị các thẻ card dự án (Chỉ áp dụng grid cho các thẻ article) */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 100%; /* Mobile: 1 cột */
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+/* Trường hợp dự phòng nếu HTML cũ chưa có class .projects-grid */
+#skills-projects > div:nth-of-type(2) {
+  width: 100%;
+}
+#skills-projects > div:nth-of-type(2) > h3 {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* Card dự án (Áp dụng Flexbox bên trong) */
+.project-item {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dải màu gradient nhẹ trên đầu mỗi thẻ card dự án */
+.project-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.project-item:hover::before {
+  opacity: 1;
+}
+
+.project-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-neon);
+}
+
+.project-item h4 {
+  font-size: var(--font-base);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+}
+
+.project-item p {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+  line-height: 1.5;
+}
+
+.project-item p:last-child {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4.4 FORM LIÊN HỆ & ADDRESS (FLEXBOX FORM CONTROLS)
+   -------------------------------------------------------------------------- */
+form {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+form > div {
+  margin-bottom: var(--space-md);
+}
+
+label {
+  display: inline-block;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: var(--space-xs);
+}
+
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-main);
+  font-size: var(--font-base); /* 16px: Ngăn ngừa iOS Safari tự phóng to khi nhập */
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Nút bấm (Button Flexbox & Neon) */
+button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  font-size: var(--font-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: var(--shadow-neon);
+  transition: all var(--transition-normal);
+  width: 100%; /* Mobile: full width */
+}
+
+button[type="submit"]:hover {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  box-shadow: var(--shadow-neon-hover);
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+address {
+  font-style: normal;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+address a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+address a:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   4.5 FOOTER (FLEXBOX CHÂN TRANG)
+   -------------------------------------------------------------------------- */
+footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+
+  /* FLEXBOX: Căn giữa nội dung footer */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+  text-align: center;
+}
+
+footer a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   4.6 FLOATING ACTION BUTTON (FAB) - LIÊN HỆ
+   - Nút hình tròn hoàn hảo ghim cố định ở góc dưới cùng bên phải màn hình
+   - Căn giữa icon và chữ "Liên hệ" bằng Flexbox
+   - Hiệu ứng phập phồng (Pulse) bằng @keyframes kết hợp scale và box-shadow
+   - Tương tác hover: Tạm dừng animation, phóng to nhẹ và màu nền tối lại
+   ========================================================================== */
+.fab-contact {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background-color: var(--fab-bg);
+  color: var(--fab-color);
+  text-decoration: none;
+  z-index: 9999;
+  cursor: pointer;
+
+  /* FLEXBOX: Căn giữa tuyệt đối icon và text theo chiều dọc */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+
+  /* Đổ bóng vật lý cơ bản */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+
+  /* Transition mượt mà khi hover */
+  transition: transform var(--transition-normal),
+              background-color var(--transition-normal),
+              box-shadow var(--transition-normal);
+
+  /* Kích hoạt animation phập phồng liên tục */
+  animation: fabPulse 2s infinite ease-in-out;
+}
+
+.fab-icon {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.fab-text {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+/* Tương tác khi Hover */
+.fab-contact:hover {
+  animation-play-state: paused;   /* Tạm dừng hiệu ứng phập phồng */
+  transform: scale(1.15);         /* Phóng to lên 15% */
+  background-color: var(--fab-hover-bg); /* Màu nền tối lại */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.fab-contact:active {
+  transform: scale(1.05);
+}
+
+/* Keyframes: Hiệu ứng phập phồng (Pulse) kết hợp scale và tỏa bóng */
+@keyframes fabPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--fab-pulse-glow),
+                0 4px 15px rgba(0, 0, 0, 0.25);
+  }
+
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 16px rgba(0, 243, 255, 0),
+                0 8px 22px rgba(0, 0, 0, 0.35);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 243, 255, 0),
+                0 4px 15px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* ==========================================================================
+   5. MEDIA QUERIES (CHUẨN MOBILE-FIRST VÀ KIỂM TRA ĐA THIẾT BỊ)
+   Mở rộng dần kích thước từ Mobile -> Tablet -> Desktop.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   5.1 BREAKPOINT TABLET (min-width: 640px đến 768px)
+   Áp dụng cho iPad Mini, máy tính bảng nhỏ hoặc điện thoại màn hình lớn xoay ngang.
+   -------------------------------------------------------------------------- */
+@media (min-width: 640px) {
+  button[type="submit"] {
+    width: auto; /* Trả về độ rộng tự nhiên của nút */
+  }
+
+  /* Section 2: Dự án chia thành 2 cột */
+  .projects-grid,
+  #skills-projects > div:nth-of-type(2) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5.2 BREAKPOINT TABLET LỚN & DESKTOP (min-width: 768px)
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  :root {
+    --font-base: 16px;
+    --font-xl: 30px;
+    --font-2xl: 40px;
+  }
+
+  main {
+    padding: var(--space-xl);
+  }
+
+  footer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-xl);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5.3 BREAKPOINT DESKTOP HOÀN CHỈNH (min-width: 1024px)
+   Áp dụng cho Màn hình máy tính bàn, Laptop 13" - 15" - 24".
+   Lúc này BỐ CỤC LƯỚI TỔNG THỂ (CSS Grid) chuyển sang 2 cột:
+   - Cột trái (300px): Sidebar cố định
+   - Cột phải (1fr): Main cuộn độc lập
+   - Header và Footer trải dài full 2 cột
+   -------------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  body {
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header  header"
+      "sidebar main"
+      "footer  footer";
+    max-width: 1440px;
+    margin: 0 auto; /* Căn giữa toàn trang trên màn hình siêu rộng */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Sidebar dính cố định (Sticky) khi cuộn nội dung Main */
+  aside.sidebar {
+    padding: var(--space-xl) var(--space-md) var(--space-xl) var(--space-xl);
+  }
+
+  /* Profile Card dính trên đầu khi người dùng cuộn xem nội dung main */
+  .card-container {
+    position: sticky;
+    top: 90px;
+  }
+
+  main {
+    padding: var(--space-xl) var(--space-xl) var(--space-xl) var(--space-md);
+  }
+
+  /* Section 2: Dự án chia thành 3 cột hoặc 2 cột rộng */
+  .projects-grid,
+  #skills-projects > div:nth-of-type(2) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5.4 BREAKPOINT MÀN HÌNH SIÊU LỚN (min-width: 1440px)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1440px) {
+  :root {
+    --space-xl: 44px;
+  }
+}
+
+/* ==========================================================================
+   6. HỆ THỐNG HIỆU ỨNG CHỮ TỰ GÕ (CSS TYPEWRITER ANIMATION SYSTEM)
+   - Thuần CSS 100% (Không dùng bất kỳ JavaScript nào)
+   - Sử dụng @keyframes chuỗi chuyển động phức tạp (Complex Keyframe Sequences)
+   - Kỹ thuật: 
+     + clip-path: inset() kết hợp hàm định thời steps() mô phỏng từng nhịp gõ phím
+     + Staggered animation delay tạo kịch bản gõ tuần tự từ trên xuống dưới
+     + Hiệu ứng con trỏ nhấp nháy (blinking cursor caret)
+     + Hiệu ứng lóe sáng neon (cyberpunk terminal glow) khi vừa gõ xong
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   6.1 ĐỊNH NGHĨA CÁC CHUỖI CHUYỂN ĐỘNG @KEYFRAMES PHỨC TẠP
+   -------------------------------------------------------------------------- */
+
+/* Chuỗi 1: Gõ chữ theo từng bước (Stepped Typing Reveal)
+   Chuyển đổi clip-path từ ẩn 100% bên phải sang hiện trọn vẹn 100%,
+   kết hợp biến đổi độ tương phản và vầng sáng nhẹ trong quá trình gõ */
+@keyframes typeStepped {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    filter: drop-shadow(0 0 1px rgba(0, 243, 255, 0.2));
+  }
+  1% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 1;
+  }
+  90% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    filter: drop-shadow(0 0 6px var(--color-primary-glow));
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
+
+/* Chuỗi 2: Hiệu ứng gõ dòng đơn cho tiêu đề (Width + border caret typing)
+   Dành cho các heading có đường viền con trỏ nhấp nháy trực tiếp */
+@keyframes typeTitleSteps {
+  0% {
+    width: 0;
+    opacity: 0;
+    border-right-color: var(--color-primary);
+  }
+  1% {
+    width: 0;
+    opacity: 1;
+    border-right-color: var(--color-primary);
+  }
+  92% {
+    width: 100%;
+    opacity: 1;
+    border-right-color: var(--color-primary);
+  }
+  100% {
+    width: 100%;
+    opacity: 1;
+    border-right-color: transparent; /* Tắt con trỏ sau khi gõ xong */
+  }
+}
+
+/* Chuỗi 3: Con trỏ nhấp nháy mô phỏng Terminal (Blinking Caret Cursor)
+   Tạo nhịp nhấp nháy chu kỳ của con trỏ gõ văn bản */
+@keyframes blinkCaret {
+  0%, 100% {
+    opacity: 0;
+    text-shadow: none;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 8px var(--color-primary);
+  }
+}
+
+/* Chuỗi 4: Xung phát quang Neon khi đoạn văn gõ hoàn tất (Terminal Print Glow) */
+@keyframes textGlowFinish {
+  0% {
+    color: var(--color-primary);
+    text-shadow: 0 0 10px var(--color-primary);
+  }
+  50% {
+    text-shadow: 0 0 15px var(--color-primary-glow), 0 0 25px rgba(0, 243, 255, 0.4);
+  }
+  100% {
+    text-shadow: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6.2 ÁP DỤNG HIỆU ỨNG TỰ GÕ VÀO CÁC THÀNH PHẦN VĂN BẢN TRÊN TOÀN TRANG
+   Áp dụng animation-fill-mode: both để giữ trạng thái ẩn ban đầu
+   và cố định văn bản ở trạng thái hiển thị 100% sau khi gõ xong.
+   -------------------------------------------------------------------------- */
+
+/* --- TẦNG 1: 0.0s – 0.4s: Logo & menu Navigation --- */
+.logo a strong {
+  display: inline-block;
+  animation: typeStepped 0.25s steps(18, end) 0s both;
+  position: relative;
+}
+
+.logo a strong::after {
+  content: "|";
+  display: inline-block;
+  color: var(--color-primary);
+  margin-left: 2px;
+  animation: blinkCaret 0.2s step-end 0s 2 both;
+}
+
+
+/* --- TẦNG 2: 0.4s – 0.8s: Họ tên, chức danh và thông tin tóm tắt trên Profile Card --- */
+.profile-name {
+  animation: typeStepped 0.18s steps(18, end) 0.4s both;
+}
+
+.profile-role {
+  animation: typeStepped 0.18s steps(24, end) 0.5s both;
+}
+
+.card-front .sidebar-quick-info li {
+  animation: typeStepped 0.12s steps(20, end) both;
+}
+.card-front .sidebar-quick-info li:nth-child(1) { animation-delay: 0.6s; }
+.card-front .sidebar-quick-info li:nth-child(2) { animation-delay: 0.66s; }
+.card-front .sidebar-quick-info li:nth-child(3) { animation-delay: 0.71s; }
+
+.flip-hint {
+  animation: typeStepped 0.12s steps(20, end) 0.74s both;
+}
+
+/* --- TẦNG 3: 0.8s – 1.0s: Tiêu đề Section 1, đoạn giới thiệu và danh sách định hướng UI/UX & Frontend --- */
+#about h2 {
+  position: relative;
+  animation: typeStepped 0.12s steps(25, end) 0.8s both;
+}
+
+#about h2::after {
+  content: "|";
+  color: var(--color-primary);
+  animation: blinkCaret 0.15s step-end 0.8s 2 both;
+  margin-left: 3px;
+}
+
+#about p:nth-of-type(1) {
+  animation: typeStepped 0.15s steps(35, end) 0.85s both;
+}
+
+#about p:nth-of-type(2) {
+  animation: typeStepped 0.12s steps(30, end) 0.9s both;
+}
+
+#about ul li {
+  animation: typeStepped 0.12s steps(40, end) both;
+}
+#about ul li:nth-child(1) { animation-delay: 0.92s; }
+#about ul li:nth-child(2) { animation-delay: 0.95s; }
+
+/* --- TẦNG 4: 1.0s – 1.6s: Danh sách công nghệ (HTML, Python, T-SQL, Git) & các card dự án --- */
+#skills-projects h2 {
+  animation: typeStepped 0.15s steps(28, end) 1.0s both;
+}
+
+.skills-block h3 {
+  animation: typeStepped 0.12s steps(25, end) 1.08s both;
+}
+
+.skills-list li {
+  animation: typeStepped 0.12s steps(30, end) both;
+}
+.skills-list li:nth-child(1) { animation-delay: 1.12s; }
+.skills-list li:nth-child(2) { animation-delay: 1.18s; }
+.skills-list li:nth-child(3) { animation-delay: 1.24s; }
+.skills-list li:nth-child(4) { animation-delay: 1.30s; }
+
+.projects-block .block-header h3 {
+  animation: typeStepped 0.12s steps(20, end) 1.35s both;
+}
+
+.project-item {
+  animation: typeStepped 0.15s steps(25, end) both;
+}
+.project-item:nth-child(1) { animation-delay: 1.40s; }
+.project-item:nth-child(2) { animation-delay: 1.48s; }
+.project-item:nth-child(3) { animation-delay: 1.54s; }
+
+/* --- TẦNG 5: 1.6s – 2.8s: Form liên hệ, thông tin địa chỉ và Footer --- */
+#contact h2 {
+  animation: typeStepped 0.25s steps(20, end) 1.6s both;
+}
+
+#contact > p {
+  animation: typeStepped 0.25s steps(35, end) 1.8s both;
+}
+
+.form-group {
+  animation: typeStepped 0.2s steps(20, end) both;
+}
+.form-group:nth-of-type(1) { animation-delay: 2.0s; }
+.form-group:nth-of-type(2) { animation-delay: 2.15s; }
+.form-group:nth-of-type(3) { animation-delay: 2.3s; }
+
+.contact-info-block address p {
+  animation: typeStepped 0.18s steps(25, end) both;
+}
+.contact-info-block address p:nth-child(1) { animation-delay: 2.38s; }
+.contact-info-block address p:nth-child(2) { animation-delay: 2.48s; }
+.contact-info-block address p:nth-child(3) { animation-delay: 2.58s; }
+
+/* --- FOOTER (Hoàn thành trong khung 2.8s) --- */
+footer p {
+  animation: typeStepped 0.22s steps(35, end) 2.62s both;
+}
+
+/* --------------------------------------------------------------------------
+   6.3 KHẢ NĂNG TRUY CẬP (ACCESSIBILITY): PREFERS-REDUCED-MOTION
+   Nếu người dùng cài đặt hệ điều hành giảm bớt hiệu ứng chuyển động,
+   toàn bộ văn bản sẽ hiện ngay lập tức mà không cần chờ animation gõ chữ.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-delay: 0s !important;
+    animation-duration: 0.01ms !important;
+    clip-path: none !important;
+    opacity: 1 !important;
+  }
+}

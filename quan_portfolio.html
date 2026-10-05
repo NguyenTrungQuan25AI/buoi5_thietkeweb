@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Nguyễn Trung Quân - Portfolio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Thư viện AOS (Animate On Scroll) CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+    <style>
+        /* ==================== CẤU HÌNH BIẾN & CHUNG ==================== */
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151d2e;
+            --card-hover-bg: #1a243a;
+            --primary-neon: #00f3ff;
+            --secondary-neon: #7000ff;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 243, 255, 0.3);
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Tùy chỉnh thanh cuộn trên Desktop */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-neon);
+            border-radius: 4px;
+        }
+
+        /* ==================== THANH ĐIỀU HƯỚNG (NAVBAR) ==================== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 8%;
+            background: rgba(11, 15, 25, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .logo {
+            font-size: clamp(20px, 4vw, 24px);
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none;
+            letter-spacing: 1px;
+            z-index: 1002;
+        }
+
+        .logo span {
+            color: var(--primary-neon);
+            text-shadow: 0 0 10px var(--primary-neon);
+        }
+
+        /* Nút Hamburger menu cho Mobile & Tablet */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 28px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1002;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-main);
+            border-radius: 3px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(8.5px) rotate(45deg);
+            background-color: var(--primary-neon);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-8.5px) rotate(-45deg);
+            background-color: var(--primary-neon);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-neon);
+            text-shadow: 0 0 8px var(--primary-neon);
+        }
+
+        /* ==================== CẤU TRÚC CHUNG CỦA SECTION ==================== */
+        section {
+            padding: 100px 8% 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            min-height: auto;
+        }
+
+        @media (min-width: 992px) {
+            section {
+                min-height: 100vh;
+                min-height: 100dvh;
+            }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 5vw, 36px);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title span {
+            color: var(--primary-neon);
+            text-shadow: 0 0 12px var(--primary-neon);
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: clamp(14px, 2.5vw, 16px);
+            margin-top: 8px;
+        }
+
+        /* Các nút bấm */
+        .btn-neon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary-neon);
+            border: 2px solid var(--primary-neon);
+            background: transparent;
+            border-radius: 8px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3), inset 0 0 10px rgba(0, 243, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .btn-neon:hover {
+            background-color: var(--primary-neon);
+            color: #0b0f19;
+            box-shadow: 0 0 20px var(--primary-neon), 0 0 45px var(--primary-neon);
+            transform: translateY(-4px);
+        }
+
+        .btn-neon:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-3px);
+        }
+
+        /* ==================== 1. HERO SECTION ==================== */
+        #hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+            gap: 40px;
+            padding-top: calc(var(--nav-height) + 40px);
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 620px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--primary-neon);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            font-size: clamp(12px, 2.5vw, 13px);
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 5.5vw, 52px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .hero-title span {
+            color: var(--primary-neon);
+            text-shadow: 0 0 15px var(--primary-neon);
+        }
+
+        .hero-desc {
+            color: var(--text-muted);
+            font-size: clamp(15px, 2.2vw, 17px);
+            margin-bottom: 30px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-img-box {
+            position: relative;
+            width: min(360px, 80vw);
+            height: min(360px, 80vw);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .hero-avatar {
+            width: min(310px, 70vw);
+            height: min(310px, 70vw);
+            border-radius: 50%;
+            background: linear-gradient(135deg, #151d2e, #1e293b);
+            border: 3px solid var(--primary-neon);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(70px, 16vw, 110px);
+            color: var(--primary-neon);
+        }
+
+        /* ==================== 2. ABOUT SECTION ==================== */
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            align-items: stretch;
+        }
+
+        .about-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: clamp(24px, 4vw, 35px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .about-card h3 {
+            font-size: clamp(19px, 3vw, 22px);
+            margin-bottom: 15px;
+            color: var(--primary-neon);
+        }
+
+        .about-info-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .about-info-list li {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: clamp(13px, 2.5vw, 15px);
+            word-break: break-word;
+        }
+
+        .about-info-list i {
+            color: var(--primary-neon);
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-box {
+            background: rgba(0, 243, 255, 0.04);
+            border: 1px solid var(--border-glow);
+            padding: clamp(14px, 3vw, 20px);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 700;
+            color: var(--primary-neon);
+        }
+
+        .stat-label {
+            font-size: clamp(12px, 2.2vw, 14px);
+            color: var(--text-muted);
+        }
+
+        /* ==================== 3. SKILLS SECTION ==================== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+            gap: 22px;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 28px 22px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary-neon);
+            box-shadow: 0 10px 25px rgba(0, 243, 255, 0.2);
+        }
+
+        .skill-icon {
+            font-size: clamp(38px, 6vw, 46px);
+            color: var(--primary-neon);
+            margin-bottom: 14px;
+            text-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
+        }
+
+        .skill-name {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .skill-desc {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar-wrap {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-neon);
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--primary-neon);
+        }
+
+        /* ==================== 4. PROJECTS SECTION ==================== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 28px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.35s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary-neon);
+            box-shadow: 0 12px 30px rgba(0, 243, 255, 0.18);
+        }
+
+        .project-preview {
+            height: 180px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .project-preview i {
+            font-size: 55px;
+            color: var(--primary-neon);
+            opacity: 0.85;
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover .project-preview i {
+            transform: scale(1.12);
+        }
+
+        .project-body {
+            padding: 22px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            font-size: 11.5px;
+            padding: 3px 9px;
+            border-radius: 12px;
+            background: rgba(0, 243, 255, 0.08);
+            color: var(--primary-neon);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .project-title {
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .project-desc {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .project-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
+        }
+
+        .project-link:hover {
+            color: var(--primary-neon);
+        }
+
+        /* ==================== 5. CONTACT SECTION ==================== */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 36px;
+        }
+
+        .contact-info {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: clamp(24px, 4vw, 35px);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .contact-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(0, 243, 255, 0.08);
+            border: 1px solid var(--border-glow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-neon);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .contact-details h4 {
+            font-size: 15.5px;
+            margin-bottom: 3px;
+        }
+
+        .contact-details p {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            word-break: break-word;
+        }
+
+        .contact-form {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: clamp(24px, 4vw, 35px);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group label {
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0b0f19;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 16px; /* Đảm bảo 16px để ngăn iOS tự động phóng to (zoom in) */
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-neon);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.25);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            text-align: center;
+            padding: 26px 8%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        footer span {
+            color: var(--primary-neon);
+        }
+
+        /* ==================== RESPONSIVE TỐI ƯU ==================== */
+        /* 1. MÀN HÌNH TABLET VÀ DƯỚI ĐÓ (<= 992px) */
+        @media (max-width: 992px) {
+            nav {
+                padding: 0 5%;
+            }
+
+            section {
+                padding: 80px 5% 60px;
+            }
+
+            #hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 30px;
+                padding-top: calc(var(--nav-height) + 30px);
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+        }
+
+        /* 2. MÀN HÌNH TABLET DỌC VÀ MOBILE (<= 868px) */
+        @media (max-width: 868px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: var(--nav-height);
+                left: 0;
+                width: 100%;
+                background: rgba(11, 15, 25, 0.96);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 0;
+                gap: 24px;
+                border-bottom: 1px solid var(--border-glow);
+                transform: translateY(-150%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .nav-links a {
+                font-size: 16px;
+            }
+        }
+
+        /* 3. MÀN HÌNH ĐIỆN THOẠI NHỎ (<= 576px) */
+        @media (max-width: 576px) {
+            nav {
+                padding: 0 4%;
+            }
+
+            section {
+                padding: 70px 4% 50px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-actions .btn-neon,
+            .hero-actions .btn-outline {
+                width: 100%;
+            }
+
+            .about-stats {
+                gap: 12px;
+            }
+
+            .contact-form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- THANH ĐIỀU HƯỚNG (NAVBAR) -->
+    <nav>
+        <a href="#hero" class="logo">QUAN<span>.DEV</span></a>
+
+        <!-- Nút Hamburger Menu cho Mobile/Tablet -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu chuyển đổi">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#hero">Trang chủ</a></li>
+            <li><a href="#about">Về tôi</a></li>
+            <li><a href="#skills">Kỹ năng</a></li>
+            <li><a href="#projects">Dự án</a></li>
+            <li><a href="#contact">Liên hệ</a></li>
+        </ul>
+    </nav>
+
+    <!-- SECTION 1: HERO SECTION -->
+    <section id="hero">
+        <div class="hero-content">
+            <span class="hero-badge" data-aos="fade-down" data-aos-duration="700">
+                <i class="fa-solid fa-code"></i> Frontend Developer & Web Designer
+            </span>
+            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="150" data-aos-duration="800">
+                Xin chào, tôi là <br><span>Nguyễn Trung Quân</span>
+            </h1>
+            <p class="hero-desc" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
+                Tôi tạo ra các trang web hiện đại, tốc độ cao với giao diện người dùng đẹp mắt, chuyển động mượt mà và tương thích trên mọi thiết bị.
+            </p>
+            <div class="hero-actions" data-aos="fade-up" data-aos-delay="450" data-aos-duration="800">
+                <a href="#projects" class="btn-neon">Xem dự án</a>
+                <a href="#contact" class="btn-outline">Liên hệ ngay</a>
+            </div>
+        </div>
+
+        <div class="hero-img-box" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="800">
+            <div class="hero-avatar">
+                <i class="fa-solid fa-user-astronaut"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: ABOUT SECTION -->
+    <section id="about">
+        <div class="section-header" data-aos="fade-down" data-aos-duration="700">
+            <h2 class="section-title">Về <span>Bản Thân</span></h2>
+            <p class="section-subtitle">Đam mê công nghệ và thiết kế giao diện sáng tạo</p>
+        </div>
+
+        <div class="about-container">
+            <!-- Cột trái: Giới thiệu bản thân -->
+            <div class="about-card" data-aos="fade-right" data-aos-duration="800">
+                <div>
+                    <h3>Kỹ sư phần mềm tương lai</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">
+                        Tôi là sinh viên ngành Công nghệ thông tin với niềm đam mê sâu sắc về Thiết kế Web, CSS Animations và trải nghiệm người dùng (UX/UI). Luôn cập nhật những xu hướng công nghệ mới nhất để áp dụng vào từng sản phẩm.
+                    </p>
+                </div>
+                <ul class="about-info-list">
+                    <li><i class="fa-solid fa-graduation-cap"></i> <strong>Học vấn:</strong> Đại học Lạc Hồng (LHU)</li>
+                    <li><i class="fa-solid fa-location-dot"></i> <strong>Địa chỉ:</strong> Đồng Nai / TP. Hồ Chí Minh</li>
+                    <li><i class="fa-solid fa-envelope"></i> <strong>Email:</strong> trungquan@example.com</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Tình trạng:</strong> Sẵn sàng nhận dự án mới</li>
+                </ul>
+            </div>
+
+            <!-- Cột phải: Các số liệu thống kê -->
+            <div class="about-card" data-aos="fade-left" data-aos-duration="800" data-aos-delay="150">
+                <div>
+                    <h3>Thống Kê Hoạt Động</h3>
+                    <p style="color: var(--text-muted);">
+                        Hành trình xây dựng sản phẩm và học tập không ngừng nghỉ:
+                    </p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-box" data-aos="flip-up" data-aos-delay="200">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Dự án hoàn thành</div>
+                    </div>
+                    <div class="stat-box" data-aos="flip-up" data-aos-delay="300">
+                        <div class="stat-number">2+</div>
+                        <div class="stat-label">Năm rèn luyện</div>
+                    </div>
+                    <div class="stat-box" data-aos="flip-up" data-aos-delay="400">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Nhiệt huyết & Đúng hạn</div>
+                    </div>
+                    <div class="stat-box" data-aos="flip-up" data-aos-delay="500">
+                        <div class="stat-number">5★</div>
+                        <div class="stat-label">Đánh giá hài lòng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: SKILLS SECTION -->
+    <section id="skills">
+        <div class="section-header" data-aos="fade-down" data-aos-duration="700">
+            <h2 class="section-title">Kỹ Năng & <span>Công Nghệ</span></h2>
+            <p class="section-subtitle">Bộ công cụ tôi sử dụng để hiện thực hóa các ý tưởng thiết kế</p>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-card" data-aos="zoom-in-up" data-aos-delay="100" data-aos-duration="700">
+                <i class="fa-brands fa-html5 skill-icon"></i>
+                <div class="skill-name">HTML5</div>
+                <div class="skill-desc">Cấu trúc chuẩn Semantic, SEO thân thiện và tối ưu trợ năng.</div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar" style="width: 95%;"></div>
+                </div>
+            </div>
+
+            <div class="skill-card" data-aos="zoom-in-up" data-aos-delay="150" data-aos-duration="700">
+                <i class="fa-brands fa-css3-alt skill-icon"></i>
+                <div class="skill-name">CSS3 / Flexbox & Grid</div>
+                <div class="skill-desc">Chuyển động mượt mà, hiệu ứng Neon, Animations & Keyframes.</div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar" style="width: 90%;"></div>
+                </div>
+            </div>
+
+            <div class="skill-card" data-aos="zoom-in-up" data-aos-delay="200" data-aos-duration="700">
+                <i class="fa-brands fa-js skill-icon"></i>
+                <div class="skill-name">JavaScript (ES6+)</div>
+                <div class="skill-desc">Xử lý DOM, sự kiện, async/await, tạo tính tương tác sống động.</div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar" style="width: 80%;"></div>
+                </div>
+            </div>
+
+            <div class="skill-card" data-aos="zoom-in-up" data-aos-delay="250" data-aos-duration="700">
+                <i class="fa-solid fa-mobile-screen-button skill-icon"></i>
+                <div class="skill-name">Responsive Design</div>
+                <div class="skill-desc">Tương thích hoàn hảo trên mọi thiết bị: Desktop, Tablet, Mobile.</div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar" style="width: 92%;"></div>
+                </div>
+            </div>
+
+            <div class="skill-card" data-aos="zoom-in-up" data-aos-delay="300" data-aos-duration="700">
+                <i class="fa-solid fa-wand-magic-sparkles skill-icon"></i>
+                <div class="skill-name">AOS & UI Libraries</div>
+                <div class="skill-desc">Hiệu ứng cuộn trang sống động, Animate On Scroll, Swiper.js.</div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar" style="width: 88%;"></div>
+                </div>
+            </div>
+
+            <div class="skill-card" data-aos="zoom-in-up" data-aos-delay="350" data-aos-duration="700">
+                <i class="fa-brands fa-git-alt skill-icon"></i>
+                <div class="skill-name">Git & GitHub</div>
+                <div class="skill-desc">Quản lý mã nguồn, làm việc nhóm và CI/CD cơ bản.</div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar" style="width: 85%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: PROJECTS SECTION -->
+    <section id="projects">
+        <div class="section-header" data-aos="fade-down" data-aos-duration="700">
+            <h2 class="section-title">Dự Án <span>Tiêu Biểu</span></h2>
+            <p class="section-subtitle">Một số dự án thiết kế và lập trình web nổi bật</p>
+        </div>
+
+        <div class="projects-grid">
+            <div class="project-card" data-aos="fade-up" data-aos-delay="100" data-aos-duration="700">
+                <div class="project-preview">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <div class="project-body">
+                    <div class="project-tags">
+                        <span class="project-tag">HTML5</span>
+                        <span class="project-tag">CSS Grid</span>
+                        <span class="project-tag">JavaScript</span>
+                    </div>
+                    <h3 class="project-title">Cửa Hàng Thương Mại Điện Tử</h3>
+                    <p class="project-desc">Trang web bán hàng thời trang với giỏ hàng tương tác, bộ lọc danh mục và giao diện responsive.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Xem trực tiếp</a>
+                        <a href="#" class="project-link"><i class="fa-brands fa-github"></i> Mã nguồn</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-aos="fade-up" data-aos-delay="200" data-aos-duration="700">
+                <div class="project-preview">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="project-body">
+                    <div class="project-tags">
+                        <span class="project-tag">Dashboard</span>
+                        <span class="project-tag">Dark Mode</span>
+                        <span class="project-tag">Neon UI</span>
+                    </div>
+                    <h3 class="project-title">Bảng Quản Trị Hệ Thống</h3>
+                    <p class="project-desc">Giao diện điều khiển số liệu kinh doanh với biểu đồ trực quan, hỗ trợ chuyển đổi giao diện sáng/tối.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Xem trực tiếp</a>
+                        <a href="#" class="project-link"><i class="fa-brands fa-github"></i> Mã nguồn</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+                <div class="project-preview">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div class="project-body">
+                    <div class="project-tags">
+                        <span class="project-tag">AOS</span>
+                        <span class="project-tag">CSS Animation</span>
+                        <span class="project-tag">Landing Page</span>
+                    </div>
+                    <h3 class="project-title">Landing Page Game Cyberpunk</h3>
+                    <p class="project-desc">Trang giới thiệu game với âm thanh, hiệu ứng cuộn trang AOS sống động và phong cách vị lai.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Xem trực tiếp</a>
+                        <a href="#" class="project-link"><i class="fa-brands fa-github"></i> Mã nguồn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: CONTACT SECTION -->
+    <section id="contact">
+        <div class="section-header" data-aos="fade-down" data-aos-duration="700">
+            <h2 class="section-title">Kết Nối <span>Với Tôi</span></h2>
+            <p class="section-subtitle">Bạn có ý tưởng dự án mới? Hãy gửi tin nhắn để cùng nhau thực hiện!</p>
+        </div>
+
+        <div class="contact-container">
+            <!-- Cột trái: Thông tin liên hệ -->
+            <div class="contact-info" data-aos="fade-right" data-aos-duration="800">
+                <div class="contact-item">
+                    <div class="contact-icon-box">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Địa chỉ</h4>
+                        <p>Đồng Nai / TP. Hồ Chí Minh, Việt Nam</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon-box">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Số điện thoại</h4>
+                        <p>+84 987 654 321</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon-box">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Email</h4>
+                        <p>nguyentrungquan@example.com</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon-box">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Giờ làm việc</h4>
+                        <p>Thứ 2 - Thứ 7: 08:00 - 18:00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột phải: Form gửi tin nhắn -->
+            <form class="contact-form" data-aos="fade-left" data-aos-duration="800" data-aos-delay="150" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã gửi tin nhắn!');">
+                <div class="form-group">
+                    <label for="name">Họ và tên</label>
+                    <input type="text" id="name" class="form-control" placeholder="Nhập tên của bạn..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Địa chỉ Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Nhập email của bạn..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Tin nhắn</label>
+                    <textarea id="message" class="form-control" placeholder="Nội dung cần trao đổi..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-neon" style="align-self: flex-start; margin-top: 10px;">
+                    Gửi Tin Nhắn <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Bản quyền thuộc về <span>Nguyễn Trung Quân</span>. Thiết kế tối ưu Responsive trên Mobile, Tablet & Desktop.</p>
+    </footer>
+
+    <!-- Thư viện AOS (Animate On Scroll) JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <!-- Script Tối ưu hóa & Điều khiển -->
+    <script>
+        // 1. KHỞI TẠO AOS VỚI THÔNG SỐ TỐI ƯU CHO MỌI THIẾT BỊ
+        AOS.init({
+            duration: 700,             // Thời lượng vừa phải (700ms), cảm giác nhanh nhạy trên mobile
+            easing: 'ease-out-cubic',
+            once: false,               // Hiệu ứng kích hoạt lại khi cuộn lên/xuống
+            offset: 60,                // 60px: phù hợp với cả màn hình điện thoại có chiều cao thấp
+            debounceDelay: 50,         // Chống giật lag khi cuộn
+            throttleDelay: 99
+        });
+
+        // 2. GIẢI PHÁP TỐI ƯU THAY THẾ CHO "REFRESH TOÀN TRANG":
+        // Thay vì dùng `location.reload()` (làm chớp trắng màn hình, tốn pin và mất vị trí cuộn),
+        // ta sử dụng cơ chế `AOS.refresh()` kết hợp Debounce chống dồn sự kiện:
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        // Khi toàn bộ hình ảnh & font chữ đã tải hoàn tất -> Tính lại offset chính xác
+        window.addEventListener('load', () => {
+            AOS.refresh();
+        });
+
+        // Khi người dùng thay đổi kích thước cửa sổ (Resize) -> Debounce rồi refresh lại tọa độ AOS
+        const handleResize = debounce(() => {
+            AOS.refresh();
+        }, 150);
+        window.addEventListener('resize', handleResize);
+
+        // Khi người dùng xoay màn hình điện thoại (Portrait <-> Landscape)
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                AOS.refresh();
+            }, 250);
+        });
+
+        // 3. XỬ LÝ MENU MOBILE / TABLET (HAMBURGER TOGGLE)
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+
+            // Tự động đóng menu khi chọn mục & refresh lại AOS
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    setTimeout(() => {
+                        AOS.refresh();
+                    }, 350);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+/* Căn giữa phần tử ra chính giữa màn hình & nền tối để nổi bật ánh sáng neon */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0d1117; /* Nền tối giúp màu neon phát sáng rực rỡ */
+}
+
+/* Class để ẩn phần tử */
+.hidden {
+  display: none !important;
+}
+
+/* CSS cho nút cơ bản với phong cách Neon */
+button {
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: #00f3ff;                 /* Màu neon cyan */
+  border: 2px solid #00f3ff;
+  border-radius: 8px;
+  cursor: pointer;
+  
+  /* Đổ bóng ánh sáng Neon ở trạng thái bình thường */
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.4),
+              inset 0 0 10px rgba(0, 243, 255, 0.2);
+  text-shadow: 0 0 8px rgba(0, 243, 255, 0.6);
+  
+  /* Thiết lập transition mượt mà cho hiệu ứng hover và active */
+  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+              background-color 0.25s ease,
+              color 0.25s ease;
+}
+
+/* Hiệu ứng khi hover: nút dịch chuyển lên 4px và phát sáng neon mạnh mẽ */
+button:hover {
+  transform: translateY(-4px);
+  background-color: #00f3ff;
+  color: #0d1117;
+  box-shadow: 0 0 20px #00f3ff, 
+              0 0 45px #00f3ff, 
+              0 0 70px rgba(0, 243, 255, 0.8);
+  text-shadow: none;
+}
+
+/* Hiệu ứng khi nhấn vào (active): quay về vị trí ban đầu trước khi hover */
+button:active {
+  transform: translateY(0); /* Trở về vị trí 0 ban đầu */
+  box-shadow: 0 0 10px #00f3ff, 
+              0 0 25px rgba(0, 243, 255, 0.7);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+/* Vòng tròn loading xoay 360 độ vô hạn đồng bộ màu neon */
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.15); /* Màu viền mờ của các phần còn lại */
+  border-top-color: #00f3ff;                   /* Cạnh trên màu neon cyan tạo điểm xoay */
+  border-radius: 50%;                          /* Biến khối vuông thành hình tròn */
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); /* Ánh sáng neon nhẹ */
+  animation: spin 1s linear infinite;          /* Xoay 360 độ vô hạn với tốc độ đều */
+}
+
+/* Animation xoay từ 0 đến 360 độ */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<!-- 
+    <!DOCTYPE html>: Khai báo chuẩn tài liệu HTML5 cho trình duyệt web. 
+    Giúp trình duyệt hiểu và hiển thị trang web ở chế độ tiêu chuẩn (Standard Mode), 
+    tránh các lỗi hiển thị kiểu cũ (Quirks Mode).
+-->
+<html lang="vi">
+<!-- 
+    <html lang="vi">: Phần tử gốc (root element) bao bọc toàn bộ trang web.
+    Thuộc tính lang="vi" khai báo ngôn ngữ chính của tài liệu là tiếng Việt, 
+    hỗ trợ công cụ tìm kiếm (SEO) và các phần mềm đọc màn hình cho người khiếm thị.
+-->
+<head>
+    <!-- 
+        <head>: Khối chứa thông tin siêu dữ liệu (metadata) của trang web. 
+        Các thông tin trong thẻ này không hiển thị trực tiếp trên giao diện nhưng rất quan trọng cho trình duyệt và SEO.
+    -->
+    <meta charset="UTF-8">
+    <!-- meta charset="UTF-8": Bảng mã ký tự chuẩn quốc tế, đảm bảo hiển thị đúng tiếng Việt có dấu mà không bị lỗi font -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- meta viewport: Thiết lập khung nhìn hiển thị chuẩn responsive, co giãn tỉ lệ 1:1 theo kích thước màn hình thiết bị (Mobile, Tablet, Desktop) -->
+
+    <meta name="description" content="Portfolio cá nhân của Nguyễn Trung Quân - Định hướng phát triển song song UI/UX Design và Web Frontend.">
+    <!-- meta description: Mô tả ngắn gọn nội dung trang phục vụ hiển thị trên kết quả tìm kiếm Google -->
+
+    <!-- Liên kết tới file CSS riêng biệt -->
+    <link rel="stylesheet" href="quan_homework.css">
+
+    <!-- Thư viện hiệu ứng cuộn trang chuyên nghiệp AOS (Animate On Scroll) -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+
+    <title>Nguyễn Trung Quân | Portfolio Cá Nhân</title>
+    <!-- <title>: Tiêu đề hiển thị trên thanh tiêu đề của trình duyệt và bookmark -->
+</head>
+<body>
+    <!-- 
+        <body>: Chứa toàn bộ nội dung hiển thị trực quan của trang web mà người dùng có thể nhìn thấy và tương tác.
+    -->
+
+    <!-- ==========================================================================
+         1. HEADER: KHỐI ĐẦU TRANG (SEMANTIC HEADER)
+         Vai trò: Chứa phần mở đầu của trang web hoặc mục điều hướng chính, thường bao gồm
+         logo, tên thương hiệu cá nhân và menu điều hướng tổng thể.
+         ========================================================================== -->
+    <header data-aos="fade-down" data-aos-duration="400">
+        <!-- Tên hoặc Logo thương hiệu cá nhân -->
+        <div class="logo">
+            <a href="#hero">
+                <strong>QUAN<span>.PORTFOLIO</span></strong>
+            </a>
+        </div>
+
+        <!-- Checkbox ẩn điều khiển trạng thái mở/đóng Menu (Kỹ thuật CSS Checkbox Hack) -->
+        <input type="checkbox" id="menu-toggle" class="menu-toggle-input" aria-label="Mở hoặc đóng menu điều hướng">
+
+        <!-- Nút Hamburger với CẤU TRÚC 3 VẠCH ĐỘC LẬP -->
+        <label for="menu-toggle" class="hamburger-btn" aria-label="Bật/Tắt Menu">
+            <span class="bar bar-top"></span>
+            <span class="bar bar-mid"></span>
+            <span class="bar bar-bot"></span>
+        </label>
+
+        <!-- 
+            <nav>: Khối ngữ nghĩa đại diện cho thanh điều hướng (Navigation).
+            Chỉ sử dụng <nav> cho các liên kết điều hướng quan trọng nhất của website,
+            giúp người dùng và công cụ hỗ trợ tiếp cận dễ dàng di chuyển giữa các phân đoạn.
+        -->
+        <nav aria-label="Điều hướng chính">
+            <!-- Sử dụng danh sách không thứ tự <ul> để cấu trúc danh sách menu theo đúng chuẩn ngữ nghĩa -->
+            <ul>
+                <li><a href="#about">Trang chủ / Về tôi</a></li>
+                <li><a href="#skills-projects">Kỹ năng & Dự án</a></li>
+                <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ==========================================================================
+         2. SIDEBAR: THANH BÊN BỔ TRỢ (SEMANTIC ASIDE)
+         Vai trò: Chứa thông tin phụ, bổ trợ cho nội dung chính của website
+         như thông tin cá nhân ngắn gọn, trạng thái sẵn sàng làm việc và liên kết nhanh.
+         Trong cấu trúc CSS Grid tổng thể, đây là vùng "sidebar".
+         ========================================================================== -->
+    <aside class="sidebar" aria-label="Thông tin hồ sơ tóm tắt" data-aos="fade-right" data-aos-duration="400" data-aos-delay="100">
+        <!-- Profile Card 3D Flip: Rê chuột để lật xem thông tin liên hệ -->
+        <div class="card-container">
+            <div class="card">
+
+                <!-- MẶT TRƯỚC (FRONT) -->
+                <div class="card-face card-front">
+                    <div class="avatar-box">
+                        <img src="https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/dea00aa18f698d93513687fbbbf0624c~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=c44c5f14&x-expires=1791360000&x-signature=2mdHOaYD65K6PzCg7YrQArrYDSo%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=my2"
+                             alt="Ảnh đại diện Nguyễn Trung Quân" class="avatar-img">
+                    </div>
+                    <h3 class="profile-name">Nguyễn Trung Quân</h3>
+                    <p class="profile-role">UI/UX Designer & Web Developer</p>
+                    <ul class="sidebar-quick-info">
+                        <li><strong>Trạng thái:</strong> <span class="badge-online">Sẵn sàng nhận việc</span></li>
+                        <li><strong>Khu vực:</strong> Đồng Nai / TP.HCM</li>
+                        <li><strong>Học vấn:</strong> ĐH Lạc Hồng (LHU)</li>
+                    </ul>
+                    <span class="flip-hint">Rê chuột để xem liên hệ &rarr;</span>
+                </div>
+
+                <!-- MẶT SAU (BACK) -->
+                <div class="card-face card-back">
+                    <h3 class="back-title">Thông Tin Kết Nối</h3>
+                    <p class="back-intro">Sẵn sàng trao đổi về các dự án UI/UX và Web Frontend:</p>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-label">Email</span>
+                            <a href="mailto:nguyentrungquan@example.com">nguyentrungquan@example.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-label">Điện thoại</span>
+                            <a href="tel:+84987654321">+84 987 654 321</a>
+                        </li>
+                        <li>
+                            <span class="contact-label">GitHub</span>
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer">github.com/trungquan</a>
+                        </li>
+                        <li>
+                            <span class="contact-label">Địa chỉ</span>
+                            <span>Đồng Nai / TP. Hồ Chí Minh</span>
+                        </li>
+                    </ul>
+                    <div class="status-badge">
+                        <span class="status-dot"></span> Sẵn sàng nhận dự án mới
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </aside>
+
+    <!-- ==========================================================================
+         3. MAIN: KHỐI NỘI DUNG CHÍNH (SEMANTIC MAIN)
+         Vai trò: Đại diện cho nội dung duy nhất và quan trọng nhất của trang web này.
+         Theo chuẩn W3C, trong một trang HTML chỉ được có MỘT thẻ <main> duy nhất
+         và không được đặt bên trong <header>, <footer>, <nav> hay <aside>.
+         ========================================================================== -->
+    <main>
+
+        <!-- ----------------------------------------------------------------------
+             SECTION 1: GIỚI THIỆU (HERO / ABOUT)
+             Vai trò của <section>: Gom nhóm một khối nội dung có cùng chủ đề logic.
+             Mỗi section luôn nên bắt đầu bằng một thẻ tiêu đề (h2, h3...).
+             ---------------------------------------------------------------------- -->
+        <section id="about" aria-labelledby="about-title" data-aos="fade-up" data-aos-duration="400" data-aos-delay="100">
+            <h2 id="about-title">Lời Chào & Giới Thiệu Bản Thân</h2>
+
+            <!-- Lời chào mừng và định hướng phát triển nghề nghiệp -->
+            <p>
+                Xin chào! Tôi là <strong>Nguyễn Trung Quân</strong>, một người đam mê công nghệ và sáng tạo trải nghiệm số.
+            </p>
+
+            <p>
+                Định hướng nghề nghiệp của tôi là <em>phát triển song song</em> giữa hai lĩnh vực bổ trợ lẫn nhau:
+            </p>
+
+            <!-- Danh sách làm rõ định hướng song song -->
+            <ul>
+                <li data-aos="fade-up" data-aos-delay="100">
+                    <strong>UI/UX Design:</strong> Nghiên cứu hành vi người dùng, thiết kế wireframe, sitemap, user flow 
+                    và xây dựng prototype trực quan chuyên nghiệp bằng <em>Figma</em>.
+                </li>
+                <li data-aos="fade-up" data-aos-delay="100">
+                    <strong>Web Frontend:</strong> Hiện thực hóa các bản thiết kế thành giao diện website sống động, 
+                    tương thích cao trên mọi thiết bị nhờ áp dụng chuẩn <em>HTML5 ngữ nghĩa (Semantic HTML)</em>, 
+                    <em>CSS Grid</em> và <em>Flexbox</em>.
+                </li>
+            </ul>
+        </section>
+
+        <!-- ==================================================================
+             PARALLAX BANNER (HIỆU ỨNG ẢNH NỀN DI CHUYỂN CHẬM HƠN NỘI DUNG KHI CUỘN)
+             Sử dụng 3 thuộc tính CSS cốt lõi:
+             - background-attachment: fixed;  (Cố định ảnh khi cuộn)
+             - background-position: center;    (Căn giữa ảnh để không bị lệch góc)
+             - background-size: cover;         (Đảm bảo ảnh luôn phủ kín khung)
+             ================================================================== -->
+        <section class="parallax-banner" aria-label="Thông điệp sứ mệnh thiết kế">
+            <div class="parallax-content" data-aos="fade-up" data-aos-duration="400" data-aos-delay="100">
+                <span class="parallax-tag">TƯ DUY &amp; ĐAM MÊ</span>
+                <h3 class="parallax-title">"Biến Ý Tưởng Thiết Kế Trực Quan Thành Trải Nghiệm Web Hoàn Hảo"</h3>
+                <p class="parallax-subtitle">Kết hợp giữa sự tinh tế của UI/UX và sức mạnh chuẩn mực của Web Frontend hiện đại.</p>
+            </div>
+        </section>
+
+        <!-- ----------------------------------------------------------------------
+             SECTION 2: KỸ NĂNG & DỰ ÁN (SKILLS & PROJECTS)
+             Vai trò: Trình bày năng lực chuyên môn và các sản phẩm thực tế đã hoàn thành.
+             ---------------------------------------------------------------------- -->
+        <section id="skills-projects" aria-labelledby="skills-projects-title" data-aos="fade-up" data-aos-duration="400" data-aos-delay="100">
+            <h2 id="skills-projects-title">Kỹ Năng Công Nghệ & Dự Án Tiêu Biểu</h2>
+
+            <!-- KHỐI 1 CỦA SECTION 2: CÁC CÔNG NGHỆ SỬ DỤNG -->
+            <div class="skills-block" data-aos="fade-up" data-aos-delay="100">
+                <h3>Công Nghệ & Kỹ Năng Đang Sử Dụng</h3>
+                <!-- Sử dụng <ul> để liệt kê danh sách kỹ năng công nghệ kết hợp thanh tiến trình -->
+                <ul class="skills-list">
+                    <!-- Kỹ năng 1: HTML5 (90%) -->
+                    <li class="skill-item" style="--target: 90%;" data-aos="fade-up" data-aos-delay="100">
+                        <div class="skill-info">
+                            <span class="skill-name"><strong>HTML5:</strong> Xây dựng bố cục ngữ nghĩa chuẩn W3C, SEO và khả năng tiếp cận</span>
+                            <span class="skill-percent">90%</span>
+                        </div>
+                        <div class="skill-progress-track">
+                            <div class="skill-progress-bar"></div>
+                        </div>
+                    </li>
+
+                    <!-- Kỹ năng 2: CSS3 (85%) -->
+                    <li class="skill-item" style="--target: 85%;" data-aos="fade-up" data-aos-delay="100">
+                        <div class="skill-info">
+                            <span class="skill-name"><strong>CSS3:</strong> Flexbox, CSS Grid, Responsive Design & Hiệu ứng Animation</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-progress-track">
+                            <div class="skill-progress-bar"></div>
+                        </div>
+                    </li>
+
+                    <!-- Kỹ năng 3: Python (80%) -->
+                    <li class="skill-item" style="--target: 80%;" data-aos="fade-up" data-aos-delay="100">
+                        <div class="skill-info">
+                            <span class="skill-name"><strong>Python:</strong> Lập trình xử lý logic cơ bản, giải quyết bài toán và phân tích dữ liệu</span>
+                            <span class="skill-percent">80%</span>
+                        </div>
+                        <div class="skill-progress-track">
+                            <div class="skill-progress-bar"></div>
+                        </div>
+                    </li>
+
+                    <!-- Kỹ năng 4: T-SQL (75%) -->
+                    <li class="skill-item" style="--target: 75%;" data-aos="fade-up" data-aos-delay="100">
+                        <div class="skill-info">
+                            <span class="skill-name"><strong>T-SQL:</strong> Truy vấn, quản lý và thao tác cơ sở dữ liệu quan hệ (SQL Server)</span>
+                            <span class="skill-percent">75%</span>
+                        </div>
+                        <div class="skill-progress-track">
+                            <div class="skill-progress-bar"></div>
+                        </div>
+                    </li>
+
+                    <!-- Kỹ năng 5: Git / GitHub (85%) -->
+                    <li class="skill-item" style="--target: 85%;" data-aos="fade-up" data-aos-delay="100">
+                        <div class="skill-info">
+                            <span class="skill-name"><strong>Git / GitHub:</strong> Quản lý phiên bản mã nguồn, làm việc nhóm và lưu trữ dự án</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-progress-track">
+                            <div class="skill-progress-bar"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- KHỐI 2 CỦA SECTION 2: DỰ ÁN TIÊU BIỂU -->
+            <div class="projects-block" data-aos="fade-up" data-aos-delay="100">
+                <div class="block-header">
+                    <h3>Dự Án Tiêu Biểu</h3>
+                    <p class="block-desc">Các sản phẩm thực tế kết hợp giữa tư duy thiết kế UI/UX và lập trình giao diện Web Frontend:</p>
+                </div>
+
+                <!-- Lưới hiển thị các thẻ card dự án độc lập -->
+                <div class="projects-grid">
+                    <!-- Dự án 1 -->
+                    <article class="project-item" data-aos="fade-up" data-aos-delay="100">
+                        <h4>1. Thiết Kế Giao Diện Website Bán Đồng Hồ Nhân Hòa</h4>
+                        <p>
+                            <strong>Mô tả:</strong> Nghiên cứu đối tượng khách hàng và thiết kế giao diện mua sắm đồng hồ sang trọng, hiện đại.
+                        </p>
+                        <p>
+                            <strong>Công cụ & Kỹ thuật:</strong> Thiết kế UI/UX trên Figma, tối ưu hóa trải nghiệm xem sản phẩm, bộ lọc giá và trang chi tiết giỏ hàng.
+                        </p>
+                    </article>
+
+                    <!-- Dự án 2 -->
+                    <article class="project-item" data-aos="fade-up" data-aos-delay="100">
+                        <h4>2. Xây Dựng Website Đa Trang Aroma Coffee</h4>
+                        <p>
+                            <strong>Mô tả:</strong> Dự án website hoàn chỉnh đa trang (Multi-page website) giới thiệu thương hiệu cà phê Aroma, menu thức uống và hệ thống đặt bàn trực tuyến.
+                        </p>
+                        <p>
+                            <strong>Công nghệ áp dụng:</strong> HTML5 Semantic, CSS Grid, Flexbox và Responsive Design tương thích từ điện thoại đến máy tính.
+                        </p>
+                    </article>
+
+                    <!-- Dự án 3 -->
+                    <article class="project-item" data-aos="fade-up" data-aos-delay="100">
+                        <h4>3. Thực Hành Thiết Kế Sitemap & User Flow</h4>
+                        <p>
+                            <strong>Mô tả:</strong> Xây dựng sơ đồ cấu trúc trang web (Sitemap) và luồng trải nghiệm hành vi của người dùng (User Flow) cho các ứng dụng thương mại điện tử.
+                        </p>
+                        <p>
+                            <strong>Mục tiêu:</strong> Đảm bảo luồng mua hàng và điều hướng thông tin rõ ràng, giảm thiểu thao tác dư thừa cho khách hàng.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ----------------------------------------------------------------------
+             SECTION 3: LIÊN HỆ (CONTACT)
+             Vai trò: Cung cấp biểu mẫu tương tác để người tuyển dụng hoặc khách hàng kết nối.
+             ---------------------------------------------------------------------- -->
+        <section id="contact" aria-labelledby="contact-title" data-aos="fade-up" data-aos-duration="400" data-aos-delay="100">
+            <h2 id="contact-title">Liên Hệ & Kết Nối</h2>
+            <p>
+                Bạn có ý tưởng dự án hoặc cơ hội hợp tác nghề nghiệp? Hãy để lại tin nhắn theo biểu mẫu dưới đây:
+            </p>
+
+            <!-- 
+                <form>: Thẻ ngữ nghĩa dùng để thu thập dữ liệu đầu vào từ người dùng.
+                action: Địa chỉ máy chủ tiếp nhận dữ liệu sau khi gửi.
+                method="post": Phương thức truyền tải dữ liệu an toàn trong phần thân của HTTP request.
+            -->
+            <form action="#" method="post" data-aos="fade-right" data-aos-delay="100">
+                <!-- 
+                    <label>: Gắn nhãn cho phần tử nhập liệu. 
+                    Thuộc tính for="fullname" liên kết trực tiếp với id="fullname" của thẻ <input>, 
+                    giúp tăng tính trợ năng (người dùng click vào nhãn thì ô input tự động được focus).
+                -->
+                <div>
+                    <label for="fullname">Họ và tên của bạn:</label><br>
+                    <input type="text" id="fullname" name="fullname" placeholder="Nhập họ và tên..." required>
+                </div>
+                <br>
+
+                <div>
+                    <label for="email">Địa chỉ Email:</label><br>
+                    <input type="email" id="email" name="email" placeholder="example@domain.com" required>
+                </div>
+                <br>
+
+                <div>
+                    <label for="topic">Chủ đề liên hệ:</label><br>
+                    <select id="topic" name="topic">
+                        <option value="job">Cơ hội việc làm / Thực tập</option>
+                        <option value="project">Hợp tác dự án Freelance</option>
+                        <option value="other">Trao đổi khác</option>
+                    </select>
+                </div>
+                <br>
+
+                <div>
+                    <label for="message">Nội dung tin nhắn:</label><br>
+                    <textarea id="message" name="message" rows="5" cols="40" placeholder="Nhập nội dung cần trao đổi tại đây..." required></textarea>
+                </div>
+                <br>
+
+                <!-- <button type="submit">: Thẻ kích hoạt hành động gửi biểu mẫu -->
+                <button type="submit">Gửi Tin Nhắn</button>
+            </form>
+
+            <br>
+            <!-- 
+                <address>: Thẻ ngữ nghĩa cung cấp thông tin liên hệ của tác giả hoặc chủ sở hữu tài liệu.
+            -->
+            <address data-aos="fade-up" data-aos-delay="100">
+                <p>Hoặc kết nối trực tiếp qua:</p>
+                <p>Email: <a href="mailto:nguyentrungquan@example.com">nguyentrungquan@example.com</a></p>
+                <p>Địa chỉ: Đồng Nai / TP. Hồ Chí Minh, Việt Nam</p>
+            </address>
+        </section>
+
+    </main>
+
+    <!-- ==========================================================================
+         3. FOOTER: KHỐI CHÂN TRANG (SEMANTIC FOOTER)
+         Vai trò: Chứa thông tin kết thúc của tài liệu, bao gồm bản quyền tác quyền (Copyright),
+         chính sách và các liên kết mạng xã hội của cá nhân.
+         ========================================================================== -->
+    <footer data-aos="fade-up" data-aos-duration="400" data-aos-delay="100">
+        <!-- Thông tin bản quyền sử dụng ký tự đặc biệt &copy; (©) -->
+        <p>&copy; 2026 Nguyễn Trung Quân. Bảo lưu mọi quyền (All Rights Reserved).</p>
+
+        <!-- 
+            Liên kết mạng xã hội: Sử dụng thuộc tính target="_blank" để mở tab mới 
+            kèm rel="noopener noreferrer" để ngăn chặn lỗ hổng bảo mật tab-nabbing.
+        -->
+        <p>
+            Kết nối mạng xã hội:
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> | 
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </p>
+    </footer>
+
+    <!-- ==========================================================================
+         4. FLOATING ACTION BUTTON (FAB) - LIÊN HỆ
+         Nút tròn ghim cố định ở góc dưới cùng bên phải với hiệu ứng phập phồng (Pulse)
+         ========================================================================== -->
+    <a href="#contact" class="fab-contact" aria-label="Liên hệ ngay" title="Liên hệ ngay" data-aos="zoom-in" data-aos-delay="100">
+        <!-- Icon tin nhắn SVG thuần -->
+        <svg class="fab-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
+            <path d="M7 9h10v2H7zm0-3h10v2H7z"/>
+        </svg>
+        <span class="fab-text">Liên hệ</span>
+    </a>
+
+    <!-- ==========================================================================
+         5. TÍCH HỢP THƯ VIỆN HIỆU ỨNG CUỘN TRANG AOS (ANIMATE ON SCROLL)
+         ========================================================================== -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Khởi tạo thư viện AOS với cấu hình tối ưu phản hồi nhanh tức thì
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({
+                duration: 400,           // Rút ngắn thời lượng chuyển động xuống 0.4s để hiệu ứng nhanh, dứt khoát
+                easing: 'ease-out-cubic',// Gia tốc mượt mà
+                once: true,              // Giữ nguyên trạng thái sau khi hiện, không bị ẩn đi gây giật lag
+                offset: 20,              // Kích hoạt ngay khi vừa chạm 20px tới viewport
+                delay: 0                 // Không bị trễ nền
+            });
+        });
+    </script>
+
+</body>
+</html>
